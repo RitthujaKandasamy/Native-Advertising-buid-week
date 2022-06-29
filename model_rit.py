@@ -1,26 +1,26 @@
 import torch.nn as nn
 import torch.nn.functional as F
+from transformers import BertModel
 
 
 
+bert_model = BertModel.from_pretrained('bert-base-uncased')
 
-
-class Network(nn.Module):
-    def __init__(self, max_seq_len, emb_dim, hidden1, hidden2, hidden3, output):
-        super().__init__()
-        self.fc1 = nn.Linear(max_seq_len*emb_dim, hidden1)
-        self.fc2 = nn.Linear(hidden1, hidden2)
-        self.fc3 = nn.Linear(hidden2, hidden3)
-        self.fc4 = nn.Linear(hidden3, output)
-        self.out = nn.Sigmoid()
-        self.dropout = nn.Dropout(0.2)
+class Classifier(nn.Module):
+    def __init__(self, bert_model):
+        super(Classifier, self).__init__()
+        self.emb = bert_model # creating the embeddings (with emb dim == 768)
+        self.fc = nn.Linear(768, 1)
     
-    
-    def forward(self, inputs):
-        layer1 = F.relu(self.fc1(inputs.squeeze(1).float()))
-        layer2 = self.dropout(F.relu(self.fc2(layer1)))
-        layer3 = self.dropout(F.relu(self.fc3(layer2)))
-        layer4 = self.fc4(layer3)
-        out = self.out(layer4)
+    def forward(self, ids, mask, token_type_ids):
+        output = self.emb(ids, attention_mask = mask, token_type_ids = token_type_ids)
+        output = output.pooler_output
+        output = self.fc(output)
+        return output
 
-        return out
+model = Classifier(bert_model)
+
+
+
+
+
