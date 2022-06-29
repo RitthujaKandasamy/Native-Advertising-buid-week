@@ -8,7 +8,7 @@ import torch.nn as nn
 from transformers import BertModel
 import matplotlib.pyplot as plt
 from model import Classifier
-
+from preprocessing import train_loader, test_loader
 
 np.random.seed(0)
 torch.manual_seed(0)
@@ -19,7 +19,7 @@ bert_model = BertModel.from_pretrained('bert-base-uncased')
 model = Classifier(bert_model)
 
 
-#df = 
+df = pd.read_csv(r'C:\Users\ritth\code\Data\df_extracted.csv').drop(columns = 'Unnamed:0.1').drop(columns = 'Unnamed:0')
 
 
 
