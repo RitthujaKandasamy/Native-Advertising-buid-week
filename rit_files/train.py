@@ -6,7 +6,8 @@ import torch
 import torch.optim as optim
 import torch.nn as nn
 from transformers import BertModel
-from model_rit import Classifier
+import matplotlib.pyplot as plt
+from model import Classifier
 
 
 np.random.seed(0)
@@ -18,7 +19,7 @@ bert_model = BertModel.from_pretrained('bert-base-uncased')
 model = Classifier(bert_model)
 
 
-df = 
+#df = 
 
 
 
@@ -112,3 +113,12 @@ for epoch in range(n_epochs):
 
             # update benckmark
             benchmark_acc = test_acc[-1]
+
+
+
+plt.plot(train_losses, label= "Train Loss")
+plt.plot(test_losses, label= "Test Loss")
+plt.xlabel(" Iteration ")
+plt.ylabel("Loss value")
+plt.legend(loc="upper left")
+plt.show()

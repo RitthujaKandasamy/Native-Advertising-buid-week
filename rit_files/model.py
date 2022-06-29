@@ -1,5 +1,4 @@
 import torch.nn as nn
-import torch.nn.functional as F
 from transformers import BertModel
 
 
@@ -9,7 +8,7 @@ bert_model = BertModel.from_pretrained('bert-base-uncased')
 class Classifier(nn.Module):
     def __init__(self, bert_model):
         super(Classifier, self).__init__()
-        self.emb = bert_model # creating the embeddings (with emb dim == 768)
+        self.emb = bert_model 
         self.fc = nn.Linear(768, 1)
     
     def forward(self, ids, mask, token_type_ids):
