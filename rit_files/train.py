@@ -19,7 +19,7 @@ bert_model = BertModel.from_pretrained('bert-base-uncased')
 model = Classifier(bert_model)
 
 
-df = pd.read_csv(r'C:\Users\ritth\code\Data\df_extracted.csv').drop(columns = 'Unnamed:0.1').drop(columns = 'Unnamed:0')
+df = pd.read_csv(r'C:\Users\ritth\code\Data\df_extracted.csv')
 
 
 
@@ -47,6 +47,7 @@ for epoch in range(n_epochs):
     start = time.time()
 
     for batch_idx, data in enumerate(train_loader):
+        #data.squeeze(1)
         optimizer.zero_grad()
 
         # pack out needed data for the model
@@ -54,6 +55,7 @@ for epoch in range(n_epochs):
         mask = data['mask']
         token_type_ids = data['token_type_ids']
         targets = data['targets']
+
 
         # forward pass
         outputs = model(ids, mask, token_type_ids)

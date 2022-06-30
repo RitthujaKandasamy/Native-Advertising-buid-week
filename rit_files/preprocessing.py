@@ -13,13 +13,13 @@ torch.manual_seed(0)
 
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-df = pd.read_csv(r'C:\Users\ritth\code\Data\df_extracted.csv').drop(columns = 'Unnamed:0.1').drop(columns = 'Unnamed:0')
-print(df)
-word_counts = df.content.apply(lambda x: len(x.split()))
-plt.figure(figsize=(8, 6))
-sns.histplot(x = word_counts)
+df = pd.read_csv(r'C:\Users\ritth\code\Data\df_extracted.csv')
 
-sample = df.sample(50).reset_index(drop=True)
+word_counts = df.content.apply(lambda x: len(x.split()))
+#plt.figure(figsize=(8, 6))
+#sns.histplot(x = word_counts)
+
+sample = df.sample(500).reset_index(drop=True)
 
 
 max_len = 36
@@ -36,13 +36,13 @@ inputs = tokenizer.encode_plus(
             truncation=True
         )
 
-class ToxCOmmentDataset(Dataset):
+class MoneyDataset(Dataset):
     def __init__(self, df, tokenizer, max_len):
         self.max_len = max_len
         self.tokenizer = tokenizer
         self.df = df
         self.comments = df.content
-        self.targets = df.drop(columns='sponsored').values.tolist()
+        self.targets = df["sponsored"].values.tolist()
 
 
     def __len__(self):
@@ -77,8 +77,8 @@ train_data.reset_index(drop=True, inplace=True)
 test_data.reset_index(drop=True, inplace=True)
 train_data.shape, test_data.shape
 
-train_set = ToxCOmmentDataset(train_data, tokenizer, max_len)
-test_set = ToxCOmmentDataset(test_data, tokenizer, max_len)
+train_set = MoneyDataset(train_data, tokenizer, max_len)
+test_set = MoneyDataset(test_data, tokenizer, max_len)
 
 train_loader = DataLoader(train_set, batch_size, shuffle=True, drop_last=True)
 test_loader = DataLoader(test_set, batch_size, shuffle=False, drop_last=True)
