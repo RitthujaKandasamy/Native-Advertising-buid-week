@@ -89,29 +89,29 @@ train_data = data.iloc[:80].reset_index(drop=True)
 test_data  = data.iloc[40:90].reset_index(drop=True)
 
 
-train_dataset = TrainData(train_data, max_seq_len=124)
-test_dataset  = TrainData(test_data,  max_seq_len=124)
+train_dataset = TrainData(train_data, max_seq_len=64)
+test_dataset  = TrainData(test_data,  max_seq_len=64)
 
-
-# def collate_train(batch, vectorizer=train_dataset.vectorizer):
-#     inputs = torch.stack([torch.stack([vectorizer(token) for token in sentence[0]]) for sentence in batch])
-#     target = torch.LongTensor([item[1] for item in batch]) # Use long tensor to avoid unwanted rounding
-#     return inputs, target
-
-# def collate_test(batch, vectorizer=test_dataset.vectorizer):
-#     inputs = torch.stack([torch.stack([vectorizer(token) for token in sentence[0]]) for sentence in batch])
-#     target = torch.LongTensor([item[1] for item in batch]) # Use long tensor to avoid unwanted rounding
-#     return inputs, target 
 
 def collation_train(batch, vectorizer=train_dataset.vectorizer):
     inputs = torch.stack([torch.stack([vectorizer(token) for token in sentence[0]]) for sentence in batch])
-    target = torch.tensor([item[1] for item in batch]).float()
+    target = torch.LongTensor([item[1] for item in batch]) # Use long tensor to avoid unwanted rounding
     return inputs, target
 
 def collation_test(batch, vectorizer=test_dataset.vectorizer):
     inputs = torch.stack([torch.stack([vectorizer(token) for token in sentence[0]]) for sentence in batch])
-    target = torch.tensor([item[1] for item in batch]).float()
-    return inputs, target
+    target = torch.LongTensor([item[1] for item in batch]) # Use long tensor to avoid unwanted rounding
+    return inputs, target 
+
+# def collation_train(batch, vectorizer=train_dataset.vectorizer):
+#     inputs = torch.stack([torch.stack([vectorizer(token) for token in sentence[0]]) for sentence in batch])
+#     target = torch.tensor([item[1] for item in batch]).float()
+#     return inputs, target
+
+# def collation_test(batch, vectorizer=test_dataset.vectorizer):
+#     inputs = torch.stack([torch.stack([vectorizer(token) for token in sentence[0]]) for sentence in batch])
+#     target = torch.tensor([item[1] for item in batch]).float()
+#     return inputs, target
 
 
 train_loader = DataLoader(train_dataset, batch_size=64, collate_fn=collation_train)

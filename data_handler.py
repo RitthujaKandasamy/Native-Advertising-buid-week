@@ -9,8 +9,8 @@ data = data.iloc[:64].reset_index(drop=True)
 
 # print(data.sponsored.value_counts())
 
-train_data = data.iloc[:80].reset_index(drop=True)
-test_data  = data.iloc[40:90].reset_index(drop=True)
+train_data = data.iloc[:400].reset_index(drop=True)
+test_data  = data.iloc[400:600].reset_index(drop=True)
 
 
 train_dataset = TrainData(train_data, max_seq_len=256)

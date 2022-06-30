@@ -17,7 +17,7 @@ optimizer = optim.Adam(model.parameters(), lr=0.003)
 
 
 
-epochs = 500
+epochs = 3
 all_train_losses, all_test_losses, all_accuracies = [],  [], []
 
 for e in range(epochs):
@@ -26,6 +26,11 @@ for e in range(epochs):
      for i, (sentences_train, labels_train) in enumerate(iter(train_loader)):
           # print(sentences_train.shape)
           sentences_train.resize_(sentences_train.size()[0], 64 * emb_dim)
+          # labels_train.to(torch.long())
+
+          #######################################################
+
+          ###############################
 
           optimizer.zero_grad()
           prediction_train = model.forward(sentences_train)   
