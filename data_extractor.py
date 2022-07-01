@@ -43,14 +43,14 @@ for idx in range(0, 6, 1):
         results = soup.find_all('p')
         reviews = [result.text for result in results]
 
-        reviews = [result.text.replace('\n', ' ').replace('\t', ' ').replace("'", ' ').replace("*", ' ').replace("'", ' ').strip().replace('   ', '').replace('  ', ' ') for result in results]
+        reviews = [result.text.replace('\n', ' ').replace(',', '').replace('\t', ' ').replace("'", ' ').replace("*", ' ').replace("'", ' ').strip().replace('   ', '').replace('  ', ' ') for result in results]
 
         # print(reviews)
 
         one_sentence = ''
 
         for item in reviews:
-            item = item.strip().replace('\n', ' ')
+            item = item.strip().replace('\n', ' ').replace(',', '')
             one_sentence = one_sentence + item + ' '
 
         file_name.append(file)
@@ -71,7 +71,7 @@ df_extracted = pd.read_csv('EXTRACTED_DATA.csv')
 
 df_extracted = df_extracted.drop_duplicates()
 df_extracted = df_extracted.dropna()
-df_extracted.to_csv('df_extracted.csv')
+df_extracted.to_csv('df_extracted_2.csv')
 print(df_extracted)
 
 

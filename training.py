@@ -1,7 +1,7 @@
 
 import torch 
 from torch import nn, optim  
-from model import model, Classifier 
+from model import model, Classifier, Classifier_3
 from data_handler import train_loader, test_loader 
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt 
@@ -11,26 +11,24 @@ import matplotlib.pyplot as plt
 
 emb_dim = 300
 MAX_SEQ_LEN = 64
-model = Classifier(MAX_SEQ_LEN, 300, 64)
+
+# model = Classifier(MAX_SEQ_LEN, 300, 128)
+model = Classifier(MAX_SEQ_LEN, 300, 128)
+
 criterion = nn.NLLLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.003)
 
 
 
-epochs = 3
+epochs = 15
 all_train_losses, all_test_losses, all_accuracies = [],  [], []
 
 for e in range(epochs):
      train_losses, test_losses, running_accuracy = 0, 0, 0
 
      for i, (sentences_train, labels_train) in enumerate(iter(train_loader)):
-          # print(sentences_train.shape)
+
           sentences_train.resize_(sentences_train.size()[0], 64 * emb_dim)
-          # labels_train.to(torch.long())
-
-          #######################################################
-
-          ###############################
 
           optimizer.zero_grad()
           prediction_train = model.forward(sentences_train)   
@@ -70,7 +68,7 @@ for e in range(epochs):
 
      print(f'Epoch  : {e+1:3}/{epochs}    |   Train Loss:  : {avg_train_loss:.8f}     |  Test Loss:  : {avg_test_loss:.8f}  |  Accuracy  :   {avg_running_accuracy:.4f}')
 
-torch.save({ "model_state": model.state_dict(), 'max_seq_len' : 64, 'emb_dim' : 64, 'hidden1' : 32, 'hidden2' : 32}, 'new_trained_model')
+torch.save({ "model_state": model.state_dict(), 'max_seq_len' : 64, 'emb_dim' : 64, 'hidden1' : 32, 'hidden2' : 32}, 'new_trained_model_2')
 
 plt.plot(all_train_losses, label='Train Loss')
 plt.plot(all_test_losses,  label='Test Loss')

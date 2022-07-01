@@ -25,7 +25,11 @@ def load_data(path):
 
 # data = load_data(path)
 
-data = pd.read_csv('df_extracted.csv')
+# data = pd.read_csv('df_extracted.csv')
+data = pd.read_csv('C:\Users\zorve\OneDrive\Documents\GitHub\Native-Advertising-buid-week\df_extracted.csv')
+
+# df_extracted_2.csv
+# 'df_extracted.csv' 
 data = data.iloc[:100].reset_index(drop=True)
 # print(data)
 
